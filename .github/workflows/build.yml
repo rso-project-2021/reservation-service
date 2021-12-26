@@ -18,7 +18,7 @@ jobs:
         env:
           POSTGRES_USER: root
           POSTGRES_PASSWORD: secret
-          POSTGRES_DB: reservation_service
+          POSTGRES_DB: electric_station
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
@@ -51,7 +51,7 @@ jobs:
     - name: Create config file
       run: |
         touch config.json
-        echo '{"db_driver":"postgres","db_source":"postgres://root:secret@localhost:5432/reservation_service?sslmode=disable","server_address":"0.0.0.0:8080","gin_mode":"debug"}' >> config.json
+        echo '{"db_driver":"postgres","db_source":"postgres://root:secret@localhost:5432/electric_station?sslmode=disable","server_address":"0.0.0.0:8080","gin_mode":"debug"}' >> config.json
         cat config.json
     - name: Test
       run: make test
