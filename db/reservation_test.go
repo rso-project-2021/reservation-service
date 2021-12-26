@@ -5,6 +5,7 @@ import (
 	"database/sql"
 	"reservation-service/util"
 	"testing"
+	"time"
 
 	"github.com/stretchr/testify/require"
 )
@@ -25,8 +26,8 @@ func createRandomReservation(t *testing.T) Reservation {
 
 	require.Equal(t, arg.Station_id, result.Station_id)
 	require.Equal(t, arg.User_id, result.User_id)
-	require.Equal(t, arg.Start, result.Start)
-	require.Equal(t, arg.End, result.End)
+	require.Equal(t, arg.Start.Round(time.Minute).Format("2006-01-02 15:04:05"), result.Start.Round(time.Minute).Format("2006-01-02 15:04:05"))
+	require.Equal(t, arg.End.Round(time.Minute).Format("2006-01-02 15:04:05"), result.End.Round(time.Minute).Format("2006-01-02 15:04:05"))
 
 	require.NotZero(t, result.ID)
 	require.NotZero(t, result.CreatedAt)
@@ -48,8 +49,8 @@ func TestGetReservation(t *testing.T) {
 	require.Equal(t, reservation1.ID, reservation2.ID)
 	require.Equal(t, reservation1.Station_id, reservation2.Station_id)
 	require.Equal(t, reservation1.User_id, reservation2.User_id)
-	require.Equal(t, reservation1.Start, reservation2.Start)
-	require.Equal(t, reservation1.End, reservation2.End)
+	require.Equal(t, reservation1.Start.Round(time.Minute).Format("2006-01-02 15:04:05"), reservation2.Start.Round(time.Minute).Format("2006-01-02 15:04:05"))
+	require.Equal(t, reservation1.End.Round(time.Minute).Format("2006-01-02 15:04:05"), reservation2.End.Round(time.Minute).Format("2006-01-02 15:04:05"))
 	require.Equal(t, reservation1.CreatedAt, reservation2.CreatedAt)
 }
 
@@ -95,8 +96,8 @@ func TestUpdateReservation(t *testing.T) {
 	require.Equal(t, reservation1.ID, reservation2.ID)
 	require.Equal(t, arg.Station_id, reservation2.Station_id)
 	require.Equal(t, arg.User_id, reservation2.User_id)
-	require.Equal(t, arg.Start, reservation2.Start)
-	require.Equal(t, arg.End, reservation2.End)
+	require.Equal(t, arg.Start.Round(time.Minute).Format("2006-01-02 15:04:05"), reservation2.Start.Round(time.Minute).Format("2006-01-02 15:04:05"))
+	require.Equal(t, arg.End.Round(time.Minute).Format("2006-01-02 15:04:05"), reservation2.End.Round(time.Minute).Format("2006-01-02 15:04:05"))
 	require.Equal(t, reservation1.CreatedAt, reservation2.CreatedAt)
 
 }
