@@ -1,0 +1,57 @@
+name: Build
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    services:
+
+      # Setup postgres database.
+      postgres:
+        image: postgres:alpine
+        env:
+          POSTGRES_USER: root
+          POSTGRES_PASSWORD: secret
+          POSTGRES_DB: reservation_service
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+    steps:
+
+    - name: Set up Go
+      uses: actions/setup-go@v2
+      with:
+        go-version: 1.17
+
+    # Checkout code repository.
+    - name: Check out code into the Go module directory
+      uses: actions/checkout@v2
+
+    # Install migrations library
+    - name: Install golang-migrate
+      run: |
+        curl -L https://github.com/golang-migrate/migrate/releases/download/v4.15.1/migrate.linux-amd64.tar.gz | tar xvz
+        sudo mv migrate /usr/bin/migrate
+        which migrate
+        
+    - name: Run migrations
+      run: make migrateup
+
+    - name: Create config file
+      run: |
+        touch config.json
+        echo '{"db_driver":"postgres","db_source":"postgres://root:secret@localhost:5432/reservation_service?sslmode=disable","server_address":"0.0.0.0:8080","gin_mode":"debug"}' >> config.json
+        cat config.json
+    - name: Test
+      run: make test
