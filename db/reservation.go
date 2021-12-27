@@ -105,3 +105,11 @@ func (store *Store) Delete(ctx context.Context, id int64) error {
 
 	return err
 }
+
+func (store *Store) GetAllByUserID(ctx context.Context, userID int64) (reservations []Reservation, err error) {
+	const query = `SELECT * FROM "reservations" WHERE "user_id" = $1`
+	reservations = []Reservation{}
+	err = store.db.SelectContext(ctx, &reservations, query, userID)
+
+	return
+}

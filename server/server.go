@@ -32,6 +32,7 @@ func NewServer(config config.Config, store *db.Store) (*Server, error) {
 		v1.POST("/reservations", server.Create)
 		v1.PUT("/reservations/:id", server.Update)
 		v1.DELETE("/reservations/:id", server.Delete)
+		v1.GET("/reservations/user/:id", server.GetAllByUserID)
 	}
 
 	// Setup health check routes.
