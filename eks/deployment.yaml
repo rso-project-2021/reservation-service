@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: reservation-service-deployment
+  labels:
+    app: reservation-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: reservation-service
+  template:
+    metadata:
+      labels:
+        app: reservation-service
+    spec:
+      containers:
+      - name: reservation-service
+        image: 092356264921.dkr.ecr.eu-central-1.amazonaws.com/reservation-service:26c694a7ea4938a95939e82a7c0857acdd15ea42
+        ports:
+        - containerPort: 8080
